@@ -1,6 +1,6 @@
 # Migration audit and plan: React, Express and the database
 
-**Status:** Audit complete. No application code has been changed. Implementation is waiting on the decisions in [section 9](#9-decisions-needed-before-implementation).
+**Status:** Audit complete. Decisions 9.1–9.4 are made: migrate the existing modules first, PostgreSQL, everything in React, and the roles chosen. Phases 0 and 3–5 are done. See [02-react-migration.md](02-react-migration.md) for progress and test results. This document describes the system *as audited*, before the migration.
 **Audit date:** 28 October 2026
 
 ---

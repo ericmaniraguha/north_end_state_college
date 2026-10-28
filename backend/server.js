@@ -1,6 +1,10 @@
 const { port } = require('./config');
-const app = require('./app');
+const { createApp } = require('./app');
 
-app.listen(port, () => {
-  console.log(`North End College running at http://localhost:${port}`);
+const dev = process.argv.includes('--dev');
+
+createApp({ dev }).then((app) => {
+  app.listen(port, () => {
+    console.log(`North End College running at http://localhost:${port}${dev ? ' (development, live reload)' : ''}`);
+  });
 });
