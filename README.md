@@ -298,3 +298,4 @@ scripts/              database backup and restore
 docs/migration/       migration audit, plan and progress notes
 data/                 the database file (not in git)
 ```
+# north_end_state_college
