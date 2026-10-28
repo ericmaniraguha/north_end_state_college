@@ -17,6 +17,10 @@ export const getEvents = (limit) => request(`/api/posts?type=event&limit=${limit
 export const getCalendar = (limit) => request(`/api/calendar?limit=${limit}`);
 export const getTestimonials = (limit) => request(`/api/testimonials?limit=${limit}`);
 
+// Answers 201 when saved, or 202 with { verification: { token, email, … } } when the
+// email address must first be confirmed with the emailed code
 export const submitApplication = (data) => request('/api/applications', { method: 'POST', body: data });
+export const verifyApplication = (data) => request('/api/applications/verify', { method: 'POST', body: data });
+export const resendApplicationCode = (data) => request('/api/applications/verify/resend', { method: 'POST', body: data });
 export const sendContactMessage = (data) => request('/api/contact', { method: 'POST', body: data });
 export const subscribe = (data) => request('/api/newsletter', { method: 'POST', body: data });

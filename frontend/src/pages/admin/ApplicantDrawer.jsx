@@ -104,7 +104,13 @@ export default function ApplicantDrawer({ application: a, onClose, onStatus, onS
                 <Detail label="Submitted" value={dateTime(a.created_at)} />
                 <Detail label="NRC" value={a.nrc} className="mono" />
                 <Detail label="Phone" value={a.phone} className="mono" />
-                <Detail label="Email" value={a.email || '—'} className="full" />
+                <Detail
+                  label="Email"
+                  className="full"
+                  value={a.email
+                    ? <>{a.email} <span className={a.email_verified_at ? 'tag-verified' : 'tag-unverified'}>{a.email_verified_at ? 'Verified' : 'Not verified'}</span></>
+                    : '—'}
+                />
                 <Detail label="Programme" value={a.programme} className="full" />
                 <Detail label="Intake" value={a.intake} />
               </dl>

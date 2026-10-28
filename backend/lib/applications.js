@@ -8,7 +8,7 @@ function validateApplication(body) {
     fullName: clean(body.full_name),
     phone: normalizePhone(body.phone),
     nrc: clean(body.nrc),
-    email: clean(body.email),
+    email: clean(body.email).toLowerCase(),
   };
 
   const errors = {};
@@ -23,10 +23,12 @@ function validateApplication(body) {
   return { data, errors };
 }
 
-function createApplication({ programmeId, fullName, email, phone, nrc }) {
+// emailVerified: the applicant has confirmed the email address with a one-time code
+function createApplication({ programmeId, fullName, email, phone, nrc }, { emailVerified = false } = {}) {
   const { lastInsertRowid } = db.prepare(
-    'INSERT INTO applications (programme_id, full_name, email, phone, nrc) VALUES (?, ?, ?, ?, ?)'
-  ).run(programmeId, fullName, email || null, phone, nrc);
+    `INSERT INTO applications (programme_id, full_name, email, phone, nrc, email_verified_at)
+     VALUES (?, ?, ?, ?, ?, CASE WHEN ? THEN datetime('now') END)`
+  ).run(programmeId, fullName, email || null, phone, nrc, emailVerified ? 1 : 0);
   return Number(lastInsertRowid);
 }
 

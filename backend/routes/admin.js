@@ -4,6 +4,7 @@ const db = require('../db');
 const { adminToken } = require('../config');
 const { clean } = require('../lib/validate');
 const { validateApplication, createApplication } = require('../lib/applications');
+const verification = require('../lib/emailVerification');
 const messaging = require('../messaging');
 
 const STATUSES = ['pending', 'accepted', 'rejected'];
@@ -54,20 +55,21 @@ router.get('/summary', (req, res) => {
 
 // ---------- applications
 
-const APPLICATIONS = `SELECT a.id, a.programme_id, a.full_name, a.email, a.phone, a.nrc, a.intake, a.status,
-    a.notes, a.reviewed_at, a.created_at, p.name AS programme
+const APPLICATIONS = `SELECT a.id, a.programme_id, a.full_name, a.email, a.email_verified_at, a.phone, a.nrc, a.intake,
+    a.status, a.notes, a.reviewed_at, a.created_at, p.name AS programme
   FROM applications a JOIN programmes p ON p.id = a.programme_id`;
 
 router.get('/applications', (req, res) => {
   res.json(db.prepare(`${APPLICATIONS} ORDER BY a.id DESC`).all());
 });
 
-// Manual entry for applications received in person, by phone or on WhatsApp.
+// Manual entry for applications received in person, by phone or on WhatsApp. No code is
+// asked for; the email counts as verified only if the applicant confirmed it before.
 // The applicant gets the usual confirmation; staff are not alerted about their own entry.
 router.post('/applications', (req, res) => {
   const { data, errors } = validateApplication(req.body);
   if (Object.keys(errors).length) return res.status(400).json({ errors });
-  const id = createApplication(data);
+  const id = createApplication(data, { emailVerified: Boolean(data.email) && verification.isVerified(data.email) });
   messaging.events.applicationSubmitted(id, { alertStaff: false });
   res.status(201).json({ id });
 });
@@ -113,7 +115,7 @@ router.patch('/applications/:id', (req, res) => {
 // ---------- sending messages
 
 // Which channels are set up in .env, and which automatic messages are switched on
-router.get('/messaging', (req, res) => res.json(messaging.status()));
+router.get('/messaging', (req, res) => res.json({ ...messaging.status(), emailVerification: verification.active() }));
 
 router.get('/applications/:id/outbox', (req, res) => {
   res.json(db.prepare(

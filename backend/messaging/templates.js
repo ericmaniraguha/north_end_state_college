@@ -33,4 +33,9 @@ const staffContact = (m) => ({
   body: `New website message from ${m.name}${m.email ? ` (${m.email})` : ''}${m.phone ? ` ${m.phone}` : ''}: ${m.message.replace(/\s+/g, ' ').slice(0, 300)}`,
 });
 
-module.exports = { confirmation, decision, staffApplication, staffContact };
+const verificationCode = (code, minutes) => ({
+  subject: `${code} is your ${COLLEGE} verification code`,
+  body: `Your ${COLLEGE} verification code is ${code}.\n\nEnter it on the application page to confirm your email address. The code expires in ${minutes} minutes.\n\nIf you did not apply to ${COLLEGE}, you can ignore this email.`,
+});
+
+module.exports = { confirmation, decision, staffApplication, staffContact, verificationCode };

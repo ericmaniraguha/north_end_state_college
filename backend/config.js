@@ -24,6 +24,11 @@ module.exports = {
   // Public address used in sitemap.xml, e.g. https://northendcollege.ac.zm
   siteUrl: env('SITE_URL').replace(/\/$/, ''),
 
+  verification: {
+    // Email a one-time code to confirm an applicant's address the first time it is used
+    applicantEmail: flag('VERIFY_APPLICANT_EMAIL', true),
+  },
+
   messaging: {
     // Channels used for automatic messages, in this order; unconfigured ones are skipped
     channels: env('NOTIFY_CHANNELS') ? list('NOTIFY_CHANNELS') : ['email', 'whatsapp', 'sms'],

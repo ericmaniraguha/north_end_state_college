@@ -229,6 +229,10 @@ button.kpi[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--accent); }
 .outbox p { margin: 0; color: var(--muted); }
 .badge-sent { background: var(--ok-soft); color: #15803D; border-color: #86EFAC; }
 .badge-failed { background: var(--bad-soft); color: #B91C1C; border-color: #FCA5A5; }
+.tag-verified, .tag-unverified { margin-left: .35rem; padding: .05rem .45rem; border-radius: 999px; font-size: .68rem; font-weight: 700; vertical-align: 1px; }
+.tag-verified { background: var(--ok-soft); color: #15803D; }
+.tag-unverified { background: var(--grey); color: var(--slate); }
+.verified-icon { width: 14px; height: 14px; margin-left: 3px; vertical-align: -2px; color: var(--ok); }
 .pill-replied { padding: .1rem .5rem; border-radius: 999px; background: var(--ok-soft); color: #15803D; font-size: .7rem; font-weight: 700; }
 
 /* Content editors */

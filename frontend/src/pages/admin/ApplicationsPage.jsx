@@ -119,8 +119,8 @@ export default function ApplicationsPage() {
   function exportCsv() {
     if (!list.length) return toast('There is nothing to export.', 'error');
     downloadCsv(`nec-applications-${today()}.csv`,
-      ['Reference', 'Name', 'Programme', 'Phone', 'NRC', 'Email', 'Intake', 'Status', 'Submitted', 'Last reviewed', 'Notes'],
-      list.map((a) => [applicationRef(a.id), a.full_name, a.programme, a.phone, a.nrc, a.email, a.intake, a.status, a.created_at, a.reviewed_at, a.notes]));
+      ['Reference', 'Name', 'Programme', 'Phone', 'NRC', 'Email', 'Email verified', 'Intake', 'Status', 'Submitted', 'Last reviewed', 'Notes'],
+      list.map((a) => [applicationRef(a.id), a.full_name, a.programme, a.phone, a.nrc, a.email, a.email ? (a.email_verified_at ? 'yes' : 'no') : '', a.intake, a.status, a.created_at, a.reviewed_at, a.notes]));
     return toast(`Exported ${plural(list.length, 'application')}`);
   }
 
@@ -223,7 +223,14 @@ export default function ApplicationsPage() {
                         </div>
                       </td>
                       <td className="wrap-sm">{a.programme}</td>
-                      <td className="contact-cell"><span className="mono">{a.phone}</span>{a.email && <small>{a.email}</small>}</td>
+                      <td className="contact-cell">
+                        <span className="mono">{a.phone}</span>
+                        {a.email && (
+                          <small title={a.email_verified_at ? 'Email verified' : 'Email not verified'}>
+                            {a.email}{a.email_verified_at && <Icon name="check" className="icon verified-icon" />}
+                          </small>
+                        )}
+                      </td>
                       <td className="mono">{a.nrc}</td>
                       <td title={dateTime(a.created_at)}>{shortDate(a.created_at)}</td>
                       <td><Badge value={a.status} /></td>

@@ -100,6 +100,12 @@ Choose one provider with `SMS_PROVIDER=africastalking` or `SMS_PROVIDER=twilio`.
 
 Africa's Talking is usually the cheaper choice for Zambian numbers. A custom sender ID has to be registered with them first.
 
+### Email verification
+
+| Setting | Default | Purpose |
+| --- | --- | --- |
+| `VERIFY_APPLICANT_EMAIL` | `true` | Email a 6-digit code to confirm an applicant's email address the first time they use it (see [Email verification](#email-verification-otp)). Only active when email (SMTP) is set up. |
+
 ### Automatic messages
 
 | Setting | Default | Purpose |
@@ -119,7 +125,8 @@ Africa's Talking is usually the cheaper choice for Zambian numbers. A custom sen
 
 | Message | When | To |
 | --- | --- | --- |
-| Confirmation, with the reference number | An applicant submits the form, or staff add an application | Applicant |
+| Verification code (email only) | An applicant applies with an email address for the first time | Applicant |
+| Confirmation, with the reference number | An application is saved (after verification, if needed), or staff add one | Applicant |
 | Decision | Staff set an application to **accepted** or **rejected** | Applicant |
 | New application alert | Someone applies on the website | Staff (`STAFF_ALERT_*`) |
 | New message alert | Someone uses the contact form | Staff |
@@ -137,6 +144,27 @@ Africa's Talking is usually the cheaper choice for Zambian numbers. A custom sen
 Every attempt, sent or failed, is saved in the `outbound_messages` table. Failures are also printed in the server console with the provider's reason, for example `InsufficientBalance` or `Invalid token`.
 
 If no channel is set up, the dashboard says so. Staff can still use the **WhatsApp**, **Call** and **Email** buttons, which open their own phone or email app.
+
+### Email verification (OTP)
+
+The first time an applicant applies with an email address, the address is confirmed with a one-time code:
+
+1. The applicant fills in the form and clicks **Submit application**.
+2. Instead of saving the application, the system emails a **6-digit code**, and the form asks for it. Everything the applicant typed is kept, and **Change email address** goes back to the form.
+3. When the right code is entered, the application is saved with the email marked **verified**. Only then are the confirmation and the staff alert sent.
+4. Later applications with the same address, in any letter case, skip the code step.
+
+Rules:
+- A code expires after **10 minutes** and allows **5 wrong tries**.
+- **Resend code** works once a minute, up to 5 times per application. A new code resets the tries.
+- Codes are stored only as hashes and are never written to the message log.
+- An application that is never confirmed is deleted after a day.
+
+Applicants without an email address apply exactly as before, with their phone number only. Applications entered by staff in the dashboard don't need a code; the email shows as *verified* only if the applicant confirmed it before.
+
+In the dashboard, the review panel shows **Verified** or **Not verified** next to the email, the applications table marks verified emails with ✓, and the CSV export has an *Email verified* column.
+
+Verification only runs when email is set up (`SMTP_*`). Set `VERIFY_APPLICANT_EMAIL=false` to turn it off. If the code email can't be sent, the applicant is asked to check the address or apply without one, and the reason is printed in the server console.
 
 ---
 
@@ -156,7 +184,7 @@ If no channel is set up, the dashboard says so. Staff can still use the **WhatsA
 - Count cards; click one to filter by that status.
 - Search by name, NRC, phone (`0977…` finds `+260977…`), email or reference (`NEC-00012`), and filter by programme and status.
 - Bulk accept, reject or reset to pending, and pagination.
-- The review panel has a status switch, messaging, internal notes and contact buttons.
+- The review panel has a status switch, messaging, internal notes, contact buttons, and whether the email is verified.
 - **New application** for walk-in or phone applicants, and **Export CSV**.
 
 Filters and the open applicant are kept in the address bar, so a refresh keeps your place.
@@ -206,7 +234,8 @@ Placeholder content to replace with the college's own: the story on the About pa
 
 **Tables:**
 - `schools`, `programmes`
-- `applications`
+- `applications` (`email_verified_at` is set when the applicant confirmed their email)
+- `email_verifications` (applications waiting for their emailed code), `verified_emails` (confirmed addresses)
 - `contact_messages`, `newsletter_subscribers`
 - `posts` (news and events), `calendar_dates`, `testimonials`
 - `outbound_messages` (every message sent)
@@ -240,7 +269,9 @@ Public endpoints:
 | GET | `/api/posts?type=news\|event&limit=` | News, or upcoming events |
 | GET | `/api/calendar?limit=` | Upcoming important dates |
 | GET | `/api/testimonials?limit=` | Testimonials |
-| POST | `/api/applications` | Apply (`programme_id`, `full_name`, `phone`, `nrc`, optional `email`) |
+| POST | `/api/applications` | Apply (`programme_id`, `full_name`, `phone`, `nrc`, optional `email`). `201` when saved; `202` with `verification.token` when a code was emailed |
+| POST | `/api/applications/verify` | Confirm the code `{ token, code }`. `201` when the application is saved |
+| POST | `/api/applications/verify/resend` | Email a new code `{ token }`. `429` with `resend_in` if asked too soon |
 | POST | `/api/contact` | Contact form (`name`, `email` or `phone`, `message`) |
 | POST | `/api/newsletter` | Subscribe (`email`) |
 

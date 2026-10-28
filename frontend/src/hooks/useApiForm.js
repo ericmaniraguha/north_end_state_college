@@ -4,8 +4,9 @@ const GENERIC_ERROR = 'Something went wrong. Please try again or contact us on W
 
 // Submits a form's fields as JSON and tracks field errors and the status message.
 // With inlineErrors: false (e.g. the one-field newsletter form) the first field error
-// is shown as the status message instead of next to a field.
-export function useApiForm(submit, { onSuccess, inlineErrors = true, errorMessage = GENERIC_ERROR } = {}) {
+// is shown as the status message instead of next to a field. resetOnSuccess(data)
+// can keep the fields, e.g. while an emailed code is being checked.
+export function useApiForm(submit, { onSuccess, inlineErrors = true, errorMessage = GENERIC_ERROR, resetOnSuccess = () => true } = {}) {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ text: '', kind: '' });
   const [busy, setBusy] = useState(false);
@@ -18,7 +19,7 @@ export function useApiForm(submit, { onSuccess, inlineErrors = true, errorMessag
     setBusy(true);
     try {
       const data = await submit(Object.fromEntries(new FormData(form)));
-      form.reset();
+      if (resetOnSuccess(data)) form.reset();
       setStatus({ text: data.message || 'Saved.', kind: 'ok' });
       onSuccess?.(data);
     } catch (err) {
