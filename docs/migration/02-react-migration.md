@@ -2,7 +2,7 @@
 
 **Status:** Phases 0, 3, 4 and 5 of the [plan](01-audit-and-plan.md) are done. The public site and the admin dashboard now run on React. The original HTML/JS frontend has been removed; it remains in git history in the first commit.
 
-**Waiting on your approval:** Phase 1 (PostgreSQL) and Phase 2 (staff accounts and roles). See [What's next](#whats-next).
+**Pending decisions:** Phase 1 (PostgreSQL) and Phase 2 (staff accounts and roles). See [What's next](#whats-next).
 
 ---
 
@@ -43,7 +43,7 @@
 
 ## Test results
 
-> **28 October 2026:** the automated test suites and test tools (Vitest, Testing Library, jsdom) were removed from the project at the owner's request. To bring them back, run `git checkout 7868267 -- backend/tests frontend/src/test` and restore the `*.test.*` files from that commit.
+> **28 October 2026:** the automated test suites and test tools (Vitest, Testing Library, jsdom) were removed from the project. To bring them back, run `git checkout 78101fd -- backend/tests frontend/src/test` and restore the `*.test.*` files from that commit.
 
 Results recorded before removal:
 
@@ -93,8 +93,8 @@ scripts/                   backup-db.js, restore-db.js
 
 ## What's next
 
-| Phase | Needs from you |
+| Phase | Decision needed |
 | --- | --- |
-| **1. PostgreSQL:** move the database to the PostgreSQL 15 already installed on this PC | Permission to create a database (for example `north_end_college`) with its own user, or a `DATABASE_URL` you create yourself in `.env` |
+| **1. PostgreSQL:** move the database to the PostgreSQL 15 already installed on this PC | Create a database (for example `north_end_college`) with its own user, and set `DATABASE_URL` in `.env` |
 | **2. Staff accounts and roles:** individual logins with hashed passwords, roles (System administrator, Admissions officer, Content editor), permission checks on every admin endpoint, audit log | Confirm the three staff roles to start with. Lecturer and Student roles are set up when their modules exist. |
 | **6. Academic modules** (students, academic years, semesters, courses, registration, results) | The policies listed in section 9.5 of the plan, and whether the system serves one campus or several |

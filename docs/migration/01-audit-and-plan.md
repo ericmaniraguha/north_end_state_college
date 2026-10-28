@@ -9,14 +9,14 @@
 
 The project is the North End College website, admissions system and admin dashboard. It has about 3,900 lines of code: Node.js and Express, a SQLite database, and plain HTML, CSS and JavaScript with no framework and no build step.
 
-**The most important finding:** the migration brief describes a university management system with student records, semester registration, course enrolment and results. **None of those modules exist in this project today.** The system stops at admission applications. It has no student records, academic years, semesters, courses, enrolments, grades, user accounts or roles.
+**The most important finding:** the migration requirements describe a university management system with student records, semester registration, course enrolment and results. **None of those modules exist in this project today.** The system stops at admission applications. It has no student records, academic years, semesters, courses, enrolments, grades, user accounts or roles.
 
 So "migrate the entire existing application to React" covers:
 
 - **8 public pages:** Home, About, Admissions, Programmes, Programme detail, News & Events, Contact, and 404.
 - **The admin dashboard:** sign-in, Applications, Messages, Subscribers, News & Events, Important Dates and Testimonials.
 
-Everything in brief sections 5B–5E beyond applications would be **new functionality**. It depends on university policies (credit limits, grading, progression and so on) that the brief says not to invent. Those are listed in [section 9](#9-decisions-needed-before-implementation).
+Everything in sections 5B–5E of the requirements beyond applications would be **new functionality**. It depends on university policies (credit limits, grading, progression and so on) that must come from the college rather than be assumed. Those are listed in [section 9](#9-decisions-needed-before-implementation).
 
 ---
 
@@ -121,7 +121,7 @@ There are 9 tables plus `schema_migrations`.
 
 | Table | Rows | Purpose |
 | --- | --- | --- |
-| `schools` | 4 | Groups of programmes. **These four names are placeholders I created and need confirming.** |
+| `schools` | 4 | Groups of programmes. **These four names are placeholders and need confirming.** |
 | `programmes` | 10 | The diploma programmes from the intake poster |
 | `applications` | 0 | Admission applications |
 | `contact_messages` | 0 | Contact form messages |
@@ -245,9 +245,9 @@ erDiagram
 
 ---
 
-## 8. Brief entities compared with what exists
+## 8. Required entities compared with what exists
 
-| Brief entity | Exists? | Notes |
+| Required entity | Exists? | Notes |
 | --- | --- | --- |
 | Faculties / schools | ✅ `schools` | The names are placeholders |
 | Departments | ❌ | |
@@ -268,7 +268,7 @@ erDiagram
 | Users, roles, permissions | ❌ | Single shared token |
 | Audit logs | ❌ | |
 | Notifications | Partly | In-app counts only (pending applications, unread messages) |
-| Finance / fees | ❌ | The brief says to add this only if it exists; it does not |
+| Finance / fees | ❌ | To be added only if the system already has it; it does not |
 
 ---
 
