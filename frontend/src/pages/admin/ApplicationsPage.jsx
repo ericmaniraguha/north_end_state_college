@@ -14,7 +14,7 @@ import NewApplicationDialog from './NewApplicationDialog.jsx';
 const PAGE_SIZE = 10;
 
 export default function ApplicationsPage() {
-  const { api, toast, fail, refreshSummary } = useAdmin();
+  const { api, toast, fail, refreshSummary, messaging } = useAdmin();
   // Filters, page and the open applicant live in the URL, so they survive a refresh
   const [params, setParams] = useSearchParams();
   const filters = { q: params.get('q') || '', status: params.get('status') || '', programme: params.get('programme') || '' };
@@ -67,7 +67,8 @@ export default function ApplicationsPage() {
       return false;
     }
     const name = ids.length === 1 && applications.find((a) => a.id === ids[0])?.full_name;
-    toast(name ? `${name} marked ${status}` : `${plural(ids.length, 'application')} marked ${status}`);
+    const notifying = status !== 'pending' && messaging.automatic.decision && messaging.automatic.channels.length > 0;
+    toast(`${name ? `${name} marked ${status}` : `${plural(ids.length, 'application')} marked ${status}`}${notifying ? ' · notifying by message' : ''}`);
     refreshSummary();
     return true;
   }

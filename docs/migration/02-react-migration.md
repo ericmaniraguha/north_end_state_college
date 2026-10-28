@@ -43,7 +43,9 @@
 
 ## Test results
 
-Run with `npm test`. Results as of 28 October 2026:
+> **28 October 2026:** the automated test suites and test tools (Vitest, Testing Library, jsdom) were removed from the project at the owner's request. To bring them back, run `git checkout 7868267 -- backend/tests frontend/src/test` and restore the `*.test.*` files from that commit.
+
+Results recorded before removal:
 
 | Suite | Command | Result |
 | --- | --- | --- |
@@ -76,13 +78,12 @@ frontend/
     utils/                 format, applications (filtering, stats, messages), csv
     config/site.js         contacts, intake, menus: edit college details here
     styles/                styles.css, admin.css (unchanged from the original)
-    test/                  test setup and sample data
 backend/
   app.js                   createApp(): API, SEO and frontend
   frontend.js              serves the React app; Vite live reload in dev; real 404s
   server.js, config.js, db.js, migrate.js
+  messaging/               email, WhatsApp and SMS (added after the migration)
   routes/, lib/, middleware/, migrations/, seeds/
-  tests/api.test.js
 scripts/                   backup-db.js, restore-db.js
 ```
 

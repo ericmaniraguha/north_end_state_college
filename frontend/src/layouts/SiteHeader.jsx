@@ -8,7 +8,7 @@ import { cx } from '../utils/format.js';
 
 // Index of the top-level menu item for the current page. Direct links win over dropdown
 // entries, so /contact highlights "Contact" rather than "About > Our Campus".
-export function activeNavIndex(pathname) {
+function activeNavIndex(pathname) {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
   const base = (href) => href.split(/[?#]/)[0];
   const matches = (href) => base(href) === path || (base(href) !== '/' && path.startsWith(`${base(href)}/`));

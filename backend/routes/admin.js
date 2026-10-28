@@ -4,6 +4,7 @@ const db = require('../db');
 const { adminToken } = require('../config');
 const { clean } = require('../lib/validate');
 const { validateApplication, createApplication } = require('../lib/applications');
+const messaging = require('../messaging');
 
 const STATUSES = ['pending', 'accepted', 'rejected'];
 
@@ -61,11 +62,14 @@ router.get('/applications', (req, res) => {
   res.json(db.prepare(`${APPLICATIONS} ORDER BY a.id DESC`).all());
 });
 
-// Manual entry for applications received in person, by phone or on WhatsApp
+// Manual entry for applications received in person, by phone or on WhatsApp.
+// The applicant gets the usual confirmation; staff are not alerted about their own entry.
 router.post('/applications', (req, res) => {
   const { data, errors } = validateApplication(req.body);
   if (Object.keys(errors).length) return res.status(400).json({ errors });
-  res.status(201).json({ id: createApplication(data) });
+  const id = createApplication(data);
+  messaging.events.applicationSubmitted(id, { alertStaff: false });
+  res.status(201).json({ id });
 });
 
 // Bulk status change: { ids: [1, 2], status: 'accepted' }
@@ -77,8 +81,9 @@ router.patch('/applications', (req, res) => {
   const update = db.prepare(
     `UPDATE applications SET status = ?, reviewed_at = datetime('now') WHERE id = ? AND status != ?`
   );
-  const updated = inTransaction(() => ids.reduce((n, id) => n + update.run(status, Number(id), status).changes, 0));
-  res.json({ updated });
+  const changed = inTransaction(() => ids.map(Number).filter((id) => update.run(status, id, status).changes));
+  messaging.events.statusChanged(changed);
+  res.json({ updated: changed.length });
 });
 
 // Single application: { status } and/or { notes }
@@ -92,21 +97,81 @@ router.patch('/applications/:id', (req, res) => {
   const current = db.prepare('SELECT status FROM applications WHERE id = ?').get(id);
   if (!current) return res.status(404).json({ error: 'Not found' });
 
+  const statusChanged = status !== undefined && status !== current.status;
   inTransaction(() => {
-    if (status !== undefined && status !== current.status) {
+    if (statusChanged) {
       db.prepare(`UPDATE applications SET status = ?, reviewed_at = datetime('now') WHERE id = ?`).run(status, id);
     }
     if (notes !== undefined) {
       db.prepare('UPDATE applications SET notes = ? WHERE id = ?').run(notes.trim().slice(0, 5000) || null, id);
     }
   });
+  if (statusChanged) messaging.events.statusChanged([id]);
   res.json(db.prepare(`${APPLICATIONS} WHERE a.id = ?`).get(id));
 });
 
-// ---------- messages and subscribers
+// ---------- sending messages
+
+// Which channels are set up in .env, and which automatic messages are switched on
+router.get('/messaging', (req, res) => res.json(messaging.status()));
+
+router.get('/applications/:id/outbox', (req, res) => {
+  res.json(db.prepare(
+    `SELECT id, channel, recipient, subject, body, kind, status, error, created_at
+     FROM outbound_messages WHERE application_id = ? AND kind != 'staff_alert' ORDER BY id DESC`
+  ).all(Number(req.params.id)));
+});
+
+// Sends a message typed by staff: { channel, subject?, body }. Returns [HTTP status, body]:
+// 201 when sent, 502 when the provider refused it (the attempt is recorded either way).
+async function sendStaffMessage({ channel, subject, body }, person, links) {
+  const problem = messaging.checkOutgoing({ channel, body }, person);
+  if (problem) return [400, { error: problem }];
+  const result = await messaging.send({
+    channel,
+    to: messaging.recipientFor(channel, person),
+    subject: clean(subject) || 'Message from North End College',
+    body: body.trim(),
+    kind: 'reply',
+    ...links,
+  });
+  return [result.status === 'sent' ? 201 : 502, result];
+}
+
+router.post('/applications/:id/send', async (req, res, next) => {
+  try {
+    const application = db.prepare('SELECT id, email, phone FROM applications WHERE id = ?').get(Number(req.params.id));
+    if (!application) return res.status(404).json({ error: 'Not found' });
+    const [code, result] = await sendStaffMessage(req.body, application, { applicationId: application.id });
+    return res.status(code).json(result);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+// ---------- contact messages and subscribers
 
 router.get('/messages', (req, res) => {
-  res.json(db.prepare('SELECT * FROM contact_messages ORDER BY id DESC').all());
+  res.json(db.prepare(
+    `SELECT m.*, (SELECT MAX(created_at) FROM outbound_messages o
+                  WHERE o.contact_message_id = m.id AND o.kind = 'reply' AND o.status = 'sent') AS replied_at
+     FROM contact_messages m ORDER BY m.id DESC`
+  ).all());
+});
+
+// Replying marks the message as read
+router.post('/messages/:id/reply', async (req, res, next) => {
+  try {
+    const message = db.prepare('SELECT id, email, phone FROM contact_messages WHERE id = ?').get(Number(req.params.id));
+    if (!message) return res.status(404).json({ error: 'Not found' });
+    const [code, result] = await sendStaffMessage(req.body, message, { contactMessageId: message.id });
+    if (code === 201) {
+      db.prepare("UPDATE contact_messages SET read_at = COALESCE(read_at, datetime('now')) WHERE id = ?").run(message.id);
+    }
+    return res.status(code).json(result);
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.patch('/messages/:id', (req, res) => {

@@ -19,13 +19,14 @@ export const ADMIN_TABS = [
 
 const AdminContext = createContext(null);
 
-// Everything an admin page needs: the API, toasts, and the sidebar summary.
+// Everything an admin page needs: the API, toasts, the sidebar summary and which
+// message channels (email, WhatsApp, SMS) the server has set up.
 export function useAdmin() {
   const { api } = useAuth();
   const toast = useToast();
-  const { summary, refreshSummary } = useContext(AdminContext);
+  const { summary, refreshSummary, messaging } = useContext(AdminContext);
   const fail = useCallback((err, message) => { if (err.status !== 401) toast(message, 'error'); }, [toast]);
-  return { api, toast, fail, summary, refreshSummary };
+  return { api, toast, fail, summary, refreshSummary, messaging };
 }
 
 function Notifications({ summary }) {
@@ -69,8 +70,11 @@ export default function AdminLayout() {
   const [bellOpen, setBellOpen] = useState(false);
   const searchRef = useRef(null);
 
+  const [messaging, setMessaging] = useState({ channels: [], automatic: { channels: [] } });
+
   const refreshSummary = useCallback(() => api.summary().then(setSummary, () => {}), [api]);
   useEffect(() => { refreshSummary(); }, [refreshSummary]);
+  useEffect(() => { api.messaging().then(setMessaging, () => {}); }, [api]);
 
   useEffect(() => {
     setSidebarOpen(false);
@@ -117,7 +121,7 @@ export default function AdminLayout() {
   const alerts = summary ? summary.applications.pending + summary.unreadMessages : 0;
   const groups = [...new Set(ADMIN_TABS.map((t) => t.group))];
   const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
-  const context = useMemo(() => ({ summary, refreshSummary }), [summary, refreshSummary]);
+  const context = useMemo(() => ({ summary, refreshSummary, messaging }), [summary, refreshSummary, messaging]);
 
   return (
     <AdminContext.Provider value={context}>

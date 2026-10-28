@@ -27,6 +27,12 @@ export function createAdminApi(token, onUnauthorized) {
     setMessageRead: (id, read) => call(`/messages/${id}`, { method: 'PATCH', body: { read } }),
     deleteMessage: (id) => call(`/messages/${id}`, { method: 'DELETE' }),
 
+    // Sending by email, WhatsApp or SMS: data is { channel, subject?, body }
+    messaging: () => call('/messaging'),
+    applicationOutbox: (id) => call(`/applications/${id}/outbox`),
+    sendToApplicant: (id, data) => call(`/applications/${id}/send`, { method: 'POST', body: data }),
+    replyToMessage: (id, data) => call(`/messages/${id}/reply`, { method: 'POST', body: data }),
+
     subscribers: () => call('/subscribers'),
     deleteSubscriber: (id) => call(`/subscribers/${id}`, { method: 'DELETE' }),
 

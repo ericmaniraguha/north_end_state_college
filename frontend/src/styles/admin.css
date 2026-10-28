@@ -217,6 +217,20 @@ button.kpi[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--accent); }
 .message-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
 .pill-new { padding: .1rem .5rem; border-radius: 999px; background: var(--yellow); color: var(--charcoal); font-size: .68rem; font-weight: 800; text-transform: uppercase; }
 
+/* Sending messages */
+.send-form { gap: .75rem; padding: 1rem; border: 1px solid var(--panel-line); border-radius: 12px; background: #FAFBFA; }
+.send-form select, .send-form input { padding: .6rem .8rem; }
+.send-form textarea { min-height: 110px; resize: vertical; }
+.send-actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem; }
+.outbox { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.outbox li { padding: .75rem .9rem; border: 1px solid var(--panel-line); border-radius: 10px; font-size: .85rem; }
+.outbox-head { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .6rem; margin-bottom: .35rem; }
+.outbox-head time { margin-left: auto; color: var(--slate); font-size: .78rem; }
+.outbox p { margin: 0; color: var(--muted); }
+.badge-sent { background: var(--ok-soft); color: #15803D; border-color: #86EFAC; }
+.badge-failed { background: var(--bad-soft); color: #B91C1C; border-color: #FCA5A5; }
+.pill-replied { padding: .1rem .5rem; border-radius: 999px; background: var(--ok-soft); color: #15803D; font-size: .7rem; font-weight: 700; }
+
 /* Content editors */
 .content-layout { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 1.5rem; align-items: start; }
 .content-form { padding: 1.5rem; }

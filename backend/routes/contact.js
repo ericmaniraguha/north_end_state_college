@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../db');
 const { clean, isEmail, normalizePhone } = require('../lib/validate');
+const messaging = require('../messaging');
 
 router.post('/', (req, res) => {
   const name = clean(req.body.name);
@@ -17,8 +18,9 @@ router.post('/', (req, res) => {
   if (message.length < 5) errors.message = 'Enter a message.';
   if (Object.keys(errors).length) return res.status(400).json({ errors });
 
-  db.prepare('INSERT INTO contact_messages (name, email, phone, message) VALUES (?, ?, ?, ?)')
+  const { lastInsertRowid } = db.prepare('INSERT INTO contact_messages (name, email, phone, message) VALUES (?, ?, ?, ?)')
     .run(name, email || null, phone, message);
+  messaging.events.contactReceived(Number(lastInsertRowid));
   res.status(201).json({ message: 'Thank you. We will get back to you soon.' });
 });
 
