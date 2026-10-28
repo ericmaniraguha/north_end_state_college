@@ -1,0 +1,21 @@
+{
+  "name": "north-end-college",
+  "version": "1.0.0",
+  "description": "North End College website: Express backend, SQLite database with migrations, static frontend",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "migrate": "node backend/migrate.js up",
+    "migrate:status": "node backend/migrate.js status",
+    "migrate:rollback": "node backend/migrate.js down",
+    "seed": "node backend/seeds/seed.js",
+    "setup": "node backend/migrate.js up && node backend/seeds/seed.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

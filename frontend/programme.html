@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Programme | North End College, Lusaka</title>
+  <meta name="description" content="Diploma programme at North End College, Lusaka, Zambia.">
+  <meta name="theme-color" content="#005B2E">
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><a href="/programmes">Programmes</a><span id="crumb-name">…</span></nav>
+        <h1 id="programme-name">Loading…</h1>
+        <p id="programme-school"></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div id="programme-content" class="detail-layout" hidden>
+          <div class="detail-body">
+            <dl class="facts">
+              <div><dt>Award</dt><dd id="fact-level"></dd></div>
+              <div><dt>Study mode</dt><dd id="fact-mode"></dd></div>
+              <div><dt>School</dt><dd id="fact-school"></dd></div>
+              <div><dt>Next intake</dt><dd id="fact-intake"></dd></div>
+            </dl>
+            <h2>Overview</h2>
+            <p id="programme-description"></p>
+            <h2>Entry requirements</h2>
+            <p id="programme-requirements"></p>
+            <h2>How to apply</h2>
+            <p>Apply online, or send your Grade 12 results and NRC to our admissions team on WhatsApp. You'll receive an instant acceptance letter once your documents are verified.</p>
+            <a href="/admissions#apply" class="link-arrow" data-apply-link>Start your application</a>
+          </div>
+          <aside class="card apply-card">
+            <h3>Apply for this programme</h3>
+            <p>Applications are open for the January 2027 full-time intake.</p>
+            <a href="/admissions#apply" class="btn btn-primary" data-apply-link>Apply now</a>
+            <div data-whatsapp></div>
+          </aside>
+        </div>
+
+        <div id="not-found" hidden>
+          <p>We couldn't find that programme. It may have been renamed or is no longer offered.</p>
+          <a href="/programmes" class="btn btn-primary">See all programmes</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="related" class="section section-light" hidden>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow dark">Same school</p>
+          <h2>Related programmes</h2>
+        </div>
+        <div id="related-grid" class="programme-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="/js/site.js"></script>
+  <script src="/js/programme.js"></script>
+</body>
+</html>

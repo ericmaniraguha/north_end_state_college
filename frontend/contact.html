@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Us | North End College, Lusaka</title>
+  <meta name="description" content="Contact North End College at Findeco House, Floor 17, Lusaka, Zambia. Call or WhatsApp +260 771 413 910 or +260 977 494 707.">
+  <meta name="theme-color" content="#005B2E">
+  <meta property="og:site_name" content="North End College">
+  <meta property="og:title" content="Contact North End College">
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>Contact</span></nav>
+        <h1>Contact Us</h1>
+        <p>Visit us in Lusaka, call, or send us a message. Our admissions team is happy to help.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split top">
+        <div>
+          <p class="eyebrow dark">Get in touch</p>
+          <h2>North End College</h2>
+          <div data-contact></div>
+        </div>
+        <form id="contact-form" class="card form" data-endpoint="/api/contact" novalidate>
+          <h3>Send us a message</h3>
+          <label>Name
+            <input name="name" autocomplete="name" required>
+            <small class="error" data-for="name"></small>
+          </label>
+          <div class="row">
+            <label>Email
+              <input name="email" type="email" autocomplete="email">
+              <small class="error" data-for="email"></small>
+            </label>
+            <label>Phone
+              <input name="phone" type="tel" autocomplete="tel" placeholder="+260 971 234 567">
+              <small class="error" data-for="phone"></small>
+            </label>
+          </div>
+          <label>Message
+            <textarea name="message" rows="5" required></textarea>
+            <small class="error" data-for="message"></small>
+          </label>
+          <button class="btn btn-primary" type="submit">Send message</button>
+          <p class="form-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="campus" class="section section-light">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow dark">Our Campus</p>
+          <h2>Findeco House, Lusaka</h2>
+          <p>Floor No. 17, Findeco House, Lusaka, Zambia.</p>
+        </div>
+        <iframe class="map" title="Map showing Findeco House, Lusaka, Zambia" src="https://www.google.com/maps?q=Findeco+House,+Lusaka,+Zambia&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="/js/site.js"></script>
+</body>
+</html>

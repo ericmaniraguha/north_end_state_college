@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admissions | North End College, Lusaka</title>
+  <meta name="description" content="Apply to North End College in Lusaka, Zambia for the January 2027 full-time intake. Entry requirements: Grade 12 results and NRC.">
+  <meta name="theme-color" content="#005B2E">
+  <meta property="og:site_name" content="North End College">
+  <meta property="og:title" content="Admissions | North End College">
+  <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>Admissions</span></nav>
+        <h1>Admissions</h1>
+        <p>Applications are open for the January 2027 full-time intake. Here's everything you need to apply to North End College.</p>
+      </div>
+    </section>
+
+    <section id="overview" class="section">
+      <div class="container split">
+        <div>
+          <p class="eyebrow dark">Admissions Overview</p>
+          <h2>January 2027 intake</h2>
+          <p>All of our diploma programmes are studied full time at our Lusaka campus. Applying is quick: once we've verified your documents, you'll receive an instant acceptance letter.</p>
+          <dl class="facts">
+            <div><dt>Intake</dt><dd>January 2027</dd></div>
+            <div><dt>Study mode</dt><dd>Full time</dd></div>
+            <div><dt>Campus</dt><dd>Findeco House, Lusaka</dd></div>
+          </dl>
+        </div>
+        <div class="card">
+          <h3>Apply on WhatsApp</h3>
+          <p class="muted">Send your Grade 12 results and NRC to either number below to get your acceptance letter.</p>
+          <div data-whatsapp></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-to-apply" class="section section-light">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow dark">How to Apply</p>
+          <h2>Four simple steps</h2>
+        </div>
+        <ol class="steps">
+          <li><h3>Choose your programme</h3><p>Browse our <a href="/programmes">diploma programmes</a> across four schools.</p></li>
+          <li><h3>Apply online or on WhatsApp</h3><p>Complete the <a href="#apply">online form</a> or message our admissions team.</p></li>
+          <li><h3>Send your documents</h3><p>Share your Grade 12 results and National Registration Card (NRC).</p></li>
+          <li><h3>Get your acceptance letter</h3><p>Receive an instant acceptance letter once your documents are verified.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="requirements" class="section">
+      <div class="container split top">
+        <div>
+          <p class="eyebrow dark">Entry Requirements</p>
+          <h2>What you need</h2>
+          <ul class="checklist">
+            <li>Grade 12 certificate or results</li>
+            <li>National Registration Card (NRC)</li>
+            <li>Availability for full-time study from January 2027</li>
+          </ul>
+          <p class="muted">Not sure if you qualify? Call or WhatsApp admissions on <span data-phones></span>.</p>
+        </div>
+
+        <form id="apply" class="card form" data-endpoint="/api/applications" novalidate>
+          <h3>Apply for the January 2027 intake</h3>
+          <label>Programme
+            <select name="programme_id" data-programmes required>
+              <option value="">Select a programme</option>
+            </select>
+            <small class="error" data-for="programme_id"></small>
+          </label>
+          <label>Full name
+            <input name="full_name" autocomplete="name" required>
+            <small class="error" data-for="full_name"></small>
+          </label>
+          <div class="row">
+            <label>Phone / WhatsApp
+              <input name="phone" type="tel" autocomplete="tel" placeholder="+260 971 234 567" required>
+              <small class="error" data-for="phone"></small>
+            </label>
+            <label>NRC number
+              <input name="nrc" placeholder="123456/12/1" required>
+              <small class="error" data-for="nrc"></small>
+            </label>
+          </div>
+          <label>Email (optional)
+            <input name="email" type="email" autocomplete="email">
+            <small class="error" data-for="email"></small>
+          </label>
+          <button class="btn btn-primary" type="submit">Submit application</button>
+          <p class="hint">After submitting, send your Grade 12 results and NRC on WhatsApp to receive your acceptance letter.</p>
+          <p class="form-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq" class="section section-light">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow dark">FAQs</p>
+          <h2>Frequently asked questions</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>How do I apply?</summary>
+            <p>Apply using the online form on this page, or send your Grade 12 results and NRC to our admissions team on WhatsApp (+260 771 413 910 or +260 977 494 707).</p>
+          </details>
+          <details>
+            <summary>What are the entry requirements?</summary>
+            <p>You need a Grade 12 certificate or results and a National Registration Card (NRC).</p>
+          </details>
+          <details>
+            <summary>When does the next intake start?</summary>
+            <p>The next intake is January 2027, for full-time study.</p>
+          </details>
+          <details>
+            <summary>How quickly will I hear back?</summary>
+            <p>Once your documents are verified, you'll receive an instant acceptance letter.</p>
+          </details>
+          <details>
+            <summary>How much are the fees?</summary>
+            <p>Please contact admissions by phone or WhatsApp for the current fees for your programme.</p>
+          </details>
+          <details>
+            <summary>Where is the campus?</summary>
+            <p>Our campus is at Findeco House, Floor No. 17, Lusaka, Zambia. <a href="/contact#campus">See the map</a>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="/js/site.js"></script>
+</body>
+</html>
