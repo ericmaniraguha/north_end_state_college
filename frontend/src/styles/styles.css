@@ -359,7 +359,7 @@ p { margin: 0 0 1em; }
   .topbar-inner { justify-content: center; text-align: center; padding: .4rem 0; }
   .topbar-links { display: none; }
   .brand-text small { display: none; }
-  .brand img { width: 44px; height: 44px; }
+  .brand img { width: 48px; height: 48px; }
   .quick-grid { grid-template-columns: 1fr; }
   .form .row { grid-template-columns: 1fr; }
   .card { padding: 1.5rem; }

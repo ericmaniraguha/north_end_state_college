@@ -19,7 +19,7 @@ export function activeNavIndex(pathname) {
 export function Brand() {
   return (
     <Link to="/" className="brand">
-      <img src="/img/logo.svg" alt="" width="52" height="52" />
+      <img src="/img/logo.png" alt="" width="60" height="60" />
       <span className="brand-text"><strong>{SITE.name}</strong><small>{SITE.tagline}</small></span>
     </Link>
   );

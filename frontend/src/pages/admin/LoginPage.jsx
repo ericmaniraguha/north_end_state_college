@@ -30,7 +30,7 @@ export default function LoginPage() {
     <div className="login-screen">
       <form className="login-card form" noValidate onSubmit={handleSubmit}>
         <div className="login-brand">
-          <img src="/img/logo.svg" alt="" width="56" height="56" />
+          <img src="/img/logo.png" alt="" width="72" height="72" />
           <span><strong>{SITE.name}</strong><small>Admin dashboard</small></span>
         </div>
         <h1>Sign in</h1>

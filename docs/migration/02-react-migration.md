@@ -62,7 +62,7 @@ Run with `npm test`. Results as of 28 October 2026:
 frontend/
   index.html               page shell, meta tags, structured data
   vite.config.mjs          build and test config
-  public/img/logo.svg
+  public/img/              logo.png, favicon.png, apple-touch-icon.png (the college's own logo)
   src/
     main.jsx, App.jsx      entry point and public routes
     routes/AdminRoutes.jsx admin routes (loaded on demand)

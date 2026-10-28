@@ -124,7 +124,7 @@ export default function AdminLayout() {
       <div className="admin-app">
         <aside id="sidebar" className={cx('admin-sidebar', sidebarOpen && 'open')} aria-label="Dashboard">
           <a href="/" className="sidebar-brand" target="_blank" rel="noopener">
-            <img src="/img/logo.svg" alt="" width="44" height="44" />
+            <img src="/img/logo.png" alt="" width="48" height="48" />
             <span><strong>{SITE.name}</strong><small>Admin dashboard</small></span>
           </a>
           <div className="sidebar-status"><span className="live-dot" /><span>{SITE.intake} intake open</span></div>

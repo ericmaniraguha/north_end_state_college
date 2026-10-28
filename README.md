@@ -185,7 +185,7 @@ backend/
 frontend/
   index.html          page shell
   vite.config.mjs
-  public/img/logo.svg
+  public/img/         logo.png, favicon.png, apple-touch-icon.png
   src/                React app (see docs/migration/02-react-migration.md)
 scripts/              database backup and restore
 docs/migration/       audit, plan and migration progress
